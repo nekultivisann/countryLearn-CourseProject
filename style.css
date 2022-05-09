@@ -1,0 +1,259 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+  font-family: system-ui;
+  color: #555;
+  background-color: #f7f7f7;
+  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+header {
+  margin-bottom: 5%;
+  border-bottom: 1px solid black;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+input {
+  text-align: center;
+  border-radius: 5px;
+  font-size: 1.4rem;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  font-size: 20px;
+  position: relative;
+  overflow: scroll;
+}
+.error {
+  min-width: 420px;
+  text-align: center;
+  border-radius: 5px;
+  border-left: solid 10px #820007;
+  background-color: #f3b3b6;
+  font-size: 14px;
+  font-weight: 300;
+  color: #d8000c;
+  padding: 10px 20px;
+  position: absolute;
+  top: 1%;
+  right: 0%;
+  overflow: hidden;
+  opacity: 0.7;
+}
+.fa-exclamation-circle {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  padding: 13px;
+}
+.fa-times {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  background-color: #e8666d;
+  padding: 13px;
+  transform: scale(1);
+}
+.fa-times:hover {
+  background-color: #e44d55;
+  cursor: pointer;
+}
+.fa-times:active {
+  transform: scale(0.95);
+}
+.show {
+  animation: show_slide 1s ease forwards;
+}
+@keyframes show_slide {
+  0% {
+    transform: translateX(100%);
+  }
+  40% {
+    transform: translateX(-10%);
+  }
+  80% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-10px);
+  }
+}
+.hide {
+  animation: hide_slide 1s ease forwards;
+}
+@keyframes hide_slide {
+  0% {
+    transform: translateX(-10px);
+  }
+  40% {
+    transform: translateX(0%);
+  }
+  80% {
+    transform: translateX(-10%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+.countries {
+  /* margin-bottom: 8rem; */
+  display: flex;
+  font-size: 2rem;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.country {
+  background-color: #fff;
+  box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
+  font-size: 1.8rem;
+  width: 30rem;
+  border-radius: 0.7rem;
+  margin: 0 3rem;
+  /* overflow: hidden; */
+  position: relative;
+}
+
+.delete {
+  position: absolute;
+  top: -2.5%;
+  right: -2.5%;
+  background: none;
+  outline: none;
+  border: none;
+  font-size: 2.5rem;
+  cursor: pointer;
+  color: #1e293b;
+  transform: skew(10deg, 10deg);
+}
+.delete:hover {
+  color: #334155;
+  transform: skew(0deg, 0deg);
+}
+.neighbour::before {
+  content: 'Neighbour country';
+  width: 100%;
+  position: absolute;
+  top: -4rem;
+
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #888;
+}
+
+.neighbour {
+  transform: scale(0.8) translateY(1rem);
+  margin-left: 0;
+}
+
+.country__img {
+  width: 30rem;
+  height: 17rem;
+  object-fit: cover;
+  background-color: #eee;
+  border-top-left-radius: 0.7rem;
+  border-top-right-radius: 0.7rem;
+}
+
+.country__data {
+  padding: 2.5rem 3.75rem 3rem 3.75rem;
+}
+
+.country__name {
+  font-size: 2.7rem;
+  margin-bottom: 0.7rem;
+}
+
+.country__region {
+  font-size: 1.4rem;
+  margin-bottom: 2.5rem;
+  text-transform: uppercase;
+  color: #888;
+}
+
+.country__row:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.country__row span {
+  display: inline-block;
+  margin-right: 2rem;
+  font-size: 2.4rem;
+}
+
+.btn-country {
+  border: none;
+  font-size: 2rem;
+  padding: 2rem 5rem;
+  border-radius: 0.7rem;
+  color: white;
+  background-color: orangered;
+  cursor: pointer;
+}
+
+.images {
+  display: flex;
+}
+
+.images img {
+  display: block;
+  width: 80rem;
+  margin: 4rem;
+}
+
+.images img.parallel {
+  width: 40rem;
+  margin: 2rem;
+  border: 3rem solid white;
+  box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.neighbour__button {
+  transform: scale(1);
+  color: #555;
+  font-weight: 900;
+  padding: 2px;
+  font-size: 12px;
+  border-radius: 4px;
+  background: none;
+  border: none;
+  position: absolute;
+  bottom: -8px;
+  left: 32%;
+  box-shadow: 2px 3px rgba(0, 0, 250, 0.1);
+}
+.neighbour__button:active {
+  transform: scale(0.97);
+}
+.neighbour__button:hover {
+  border-top: 1px solid #555;
+}
+
+.hidden {
+  display: none;
+}
