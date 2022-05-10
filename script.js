@@ -6,6 +6,8 @@ const butonX = document.querySelector('.delete');
 const buttonCloseError = document.querySelector('.fa-times');
 const errorMsg = document.querySelector('.error_msg');
 const errorCon = document.querySelector('.error');
+const msgCon = document.querySelector('.msg');
+const msgMsg = document.querySelector('.msg_msg');
 let country, neighbour;
 let buttonState = false;
 const countryArr = [];
@@ -236,7 +238,7 @@ buttonCloseError.addEventListener('click', function () {
   errorCon.classList.remove('show');
   errorCon.classList.add('hide');
 });
-//CONTAINER LOAD
+//Error display
 function errorDisplay(error) {
   console.error(error);
   errorCon.classList.remove('hidden');
@@ -248,13 +250,35 @@ function errorDisplay(error) {
     errorCon.classList.remove('show');
   }, 3000);
 }
-
+//Msg display
+function msgDisplay(data) {
+  msgCon.classList.remove('hidden');
+  msgCon.classList.remove('hide');
+  msgCon.classList.add('show');
+  msgMsg.textContent = `You are in ${data.city}, ${data.country}`;
+  setTimeout(() => {
+    msgCon.classList.add('hide');
+    msgCon.classList.remove('show');
+  }, 3000);
+}
 ////////////////////////////////////
 //CODING CHALLENGE #1//
 ///////////////////////////////////
-function whereAmI(lat, lng) {
-  const request = fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
-  request
+function getPosition() {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      position => resolve(position),
+      err => reject(err)
+    );
+  }).then(response => {
+    const { latitude: lat, longitude: lng } = response.coords;
+
+    return fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+  });
+}
+
+function whereAmI() {
+  getPosition()
     .then(response => {
       if (response.status === 403)
         throw new Error(`To many attempts (${response.status} code)`);
@@ -263,7 +287,7 @@ function whereAmI(lat, lng) {
       return response.json();
     })
     .then(data => {
-      console.log(`You are in ${data.city}, ${data.country}`);
+      setTimeout(() => msgDisplay(data), 1000);
       return fetch(`https://restcountries.com/v3.1/name/${data.country}`);
     })
     .then(response => {
@@ -279,8 +303,58 @@ function whereAmI(lat, lng) {
     .finally(() => (countriesContainer.opacity = 1));
 }
 
-document.querySelector('.btn-country').addEventListener('click', function (e) {
-  setTimeout(() => whereAmI(52.508, 13.381), 2000);
-  setTimeout(() => whereAmI(19.037, 72.873), 4000);
-  setTimeout(() => whereAmI(-33.933, 18.474), 6000);
-});
+document.querySelector('.btn-country').addEventListener('click', whereAmI);
+
+//////
+// console.log('Test start');
+// setTimeout(() => console.log('Timer 0'), 0);
+// Promise.resolve('Resolved 2').then(response => {
+//   for (let i = 0; i < 1000000000; i++) {}
+//   console.log(response);
+// });
+// Promise.resolve('Resolved 1').then(response => console.log(response));
+// console.log('Test end');
+// //Buidling a promise
+
+// const lotteryPromise = new Promise(function (reslove, reject) {
+//   console.log(`Lotter draw has started...`);
+//   tic();
+//   setTimeout(() => {
+//     if (Math.random() >= 0.5) {
+//       reslove(`You WIN!`);
+//     } else reject(new Error(`You LOST your money!`));
+//   }, 6000);
+// });
+
+// function tic() {
+//   let sec = 5;
+
+//   const timer = () => {
+//     if (sec <= 0) return;
+//     console.log(sec);
+//     sec--;
+//   };
+//   setInterval(timer, 1000);
+// }
+// lotteryPromise
+//   .then(response => console.log(response))
+//   .catch(error => console.error(error.message));
+
+//PROMISIFYING setTIMOUt
+const wait = seconds =>
+  new Promise((resolve, reject) => {
+    setTimeout(resolve, seconds * 1000);
+    setTimeout(reject, seconds * 2000);
+  });
+
+wait(3)
+  .then(response => {
+    console.log(`I waited for 3 seconds!`);
+    return wait(2);
+  })
+  .then(response => {
+    console.log('I waited for 2 seconds!');
+    return wait(2);
+  })
+  .then(response => console.log('I waited for 1 second!'))
+  .catch(error => console.log(error));
